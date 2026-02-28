@@ -1,0 +1,945 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIVault | The Premium AI Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Dark Theme (Default) */
+            --bg-color: #05070a;
+            --surface-color: #11141d;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --accent-color: #6366f1;
+            --accent-hover: #818cf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --glass-bg: rgba(0, 0, 0, 0.02);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent-color: #4f46e5;
+            --card-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            transition: background-color 0.4s ease;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- UI Components --- */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        header {
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(var(--bg-color), 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        
+
+         .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary { background: var(--accent-color); color: white; }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); }
+        .btn-ghost { background: transparent; color: var(--text-primary); border: 1px solid var(--glass-border); }
+        .btn-ghost:hover { background: var(--glass-bg); }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .stats-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Controls & Filters --- */
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            background: var(--surface-color);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .search-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.8rem;
+            background: var(--bg-color);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        select, .filter-btn {
+            padding: 0.8rem 1rem;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Update the container to allow wrapping */
+        .category-scroll {
+            display: flex;
+            flex-wrap: wrap; /* This allows chips to move to the next line */
+            gap: 0.7rem; /* Space between chips */
+            padding: 10px 0;
+            width: 100%;
+            justify-content: flex-start; /* Aligns them to the left */
+        }
+
+        /* Ensure the chips look consistent in a grid */
+        .cat-chip {
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            background: var(--bg-color);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .cat-chip:hover {
+            border-color: var(--accent-color);
+            background: var(--glass-bg);
+        }
+
+        .cat-chip.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* --- Grid & Cards --- */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            min-height: 400px;
+        }
+
+        .tool-card {
+            background: var(--surface-color);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            position: relative;
+            transition: var(--transition);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-color);
+            box-shadow: var(--card-shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+        }
+
+        .tool-logo {
+            width: 54px;
+            height: 54px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #fff;
+            padding: 4px;
+        }
+
+                /* Placeholder for tools without logos */
+        .logo-placeholder {
+            width: 54px;
+            height: 54px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: white;
+            text-transform: uppercase;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Larger version for the Modal */
+        .modal-logo.logo-placeholder {
+            width: 80px;
+            height: 80px;
+            font-size: 2.2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .favorite-btn {
+            background: var(--glass-bg);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .favorite-btn.active { color: var(--danger); }
+
+        .tool-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+        }
+
+        .pricing-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .price-free { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .price-paid { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+        .price-freemium { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+
+        .rating-mini {
+            color: var(--warning);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* --- Modal System --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--surface-color);
+            max-width: 600px;
+            width: 100%;
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            padding: 2.5rem;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .modal-overlay.active { display: flex; }
+        .modal-overlay.active .modal-content { transform: scale(1); opacity: 1; }
+
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-body { text-align: center; }
+        .modal-logo { width: 80px; height: 80px; border-radius: 20px; margin-bottom: 1.5rem; }
+        
+        .modal-meta {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* --- Toast Notification --- */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 2000;
+            transition: var(--transition);
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* --- Back to Top --- */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            color: white;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        mark {
+            background: rgba(99, 102, 241, 0.3);
+            color: inherit;
+            border-radius: 2px;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .search-row { grid-template-columns: 1fr; }
+            .nav-actions .btn-ghost span { display: none; }
+            .modal-actions { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-bolt"></i>
+                    AIVault
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-ghost" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="btn btn-primary" onclick="toggleModal('submitModal')">
+                        <i class="fas fa-plus"></i>
+                        <span>Submit Tool</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="stats-badge" id="totalCounter">0 AI Tools Available</div>
+            <h1>Discover the next generation of <span style="color: var(--accent-color)">AI Tools.</span></h1>
+            <p>The definitive collection of the world's most powerful AI resources, curated for creators, developers, and founders.</p>
+        </section>
+
+        <section class="controls-section">
+            <div class="search-row">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by name or description...">
+                </div>
+                <select id="sortSelect">
+                    <option value="newest">Recently Added</option>
+                    <option value="rating">Highest Rated</option>
+                    <option value="az">Alphabetical (A-Z)</option>
+                </select>
+                <button class="filter-btn" id="favFilter">
+                    <i class="far fa-heart"></i> My Favorites (<span id="favCount">0</span>)
+                </button>
+            </div>
+            <div class="category-scroll" id="categoryList">
+                <div class="cat-chip active" data-cat="all">🔥 All Tools</div>
+                </div>
+        </section>
+
+        <div class="tools-grid" id="toolsGrid">
+            </div>
+    </main>
+
+    <div class="modal-overlay" id="toolModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAllModals()">&times;</span>
+            <div class="modal-body" id="modalDetailContent">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="submitModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeAllModals()">&times;</span>
+            <h2 style="margin-bottom: 1.5rem">Submit New Tool</h2>
+            <form id="submitForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                <input type="text" placeholder="Tool Name" required class="btn-ghost" style="padding: 12px; border-radius: 8px; background: var(--bg-color)">
+                <input type="text" placeholder="Category (e.g. Chatbot, Video)" required class="btn-ghost" style="padding: 12px; border-radius: 8px; background: var(--bg-color)">
+                <input type="url" placeholder="Website URL" required class="btn-ghost" style="padding: 12px; border-radius: 8px; background: var(--bg-color)">
+                <select required class="btn-ghost" style="padding: 12px; border-radius: 8px; background: var(--bg-color)">
+                    <option value="Free">Free</option>
+                    <option value="Freemium">Freemium</option>
+                    <option value="Paid">Paid</option>
+                </select>
+                <textarea placeholder="Short Description" rows="3" required class="btn-ghost" style="padding: 12px; border-radius: 8px; background: var(--bg-color)"></textarea>
+                <button type="submit" class="btn btn-primary" style="justify-content: center; margin-top: 1rem;">Submit for Review</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast">Link Copied Successfully!</div>
+    <div id="backToTop"><i class="fas fa-chevron-up"></i></div>
+
+    <footer style="margin-top: 5rem; padding: 4rem 0; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-secondary);">
+        <p>&copy; 2024 AIVault Directory. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+
+                // 1. Generate a unique color for the logo background based on the tool name
+        function getToolColor(name) {
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) {
+                hash = name.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            return `hsl(${Math.abs(hash) % 360}, 60%, 45%)`;
+        }
+
+        // 2. Generate the HTML for the placeholder
+        function createPlaceholderLogo(name, isModal = false) {
+            const firstLetter = name.charAt(0);
+            const bgColor = getToolColor(name);
+            const extraClass = isModal ? 'modal-logo' : '';
+            return `<div class="logo-placeholder ${extraClass}" style="background-color: ${bgColor}">${firstLetter}</div>`;
+        }
+
+        // 3. This triggers if the official logo link is broken
+        function handleImageError(imgElement, toolName) {
+            imgElement.outerHTML = createPlaceholderLogo(toolName);
+        }
+        // --- 1. Tool Data (50 Realistic AI Tools) ---
+        const toolsData = [
+            { name: "ChatGPT", category: "Chatbots", description: "The world's most popular conversational AI by OpenAI. Capable of coding, writing, and logical reasoning.", pricing: "Freemium", link: "https://chatgpt.com", logo: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", addedDate: "2023-11-01" },
+            { name: "Midjourney", category: "Art & Images", description: "Generate stunning hyper-realistic images and artistic compositions via Discord commands.", pricing: "Paid", link: "https://midjourney.com", logo: "https://asset.brandfetch.io/idfS9_l_6-/id88l2_X0m.png", addedDate: "2023-10-15" },
+            { name: "Claude 3.5", category: "Chatbots", description: "Anthropic's latest model known for its nuance, safety, and exceptional writing capabilities.", pricing: "Freemium", link: "https://claude.ai", logo: "https://asset.brandfetch.io/id_o_qY_jR/idpXU1W9Uf.jpeg", addedDate: "2024-06-20" },
+            { name: "Jasper", category: "Copywriting", description: "AI content platform that helps marketing teams create high-quality brand content at scale.", pricing: "Paid", link: "https://jasper.ai", logo: "https://asset.brandfetch.io/id6_6tO6e4/idXGZ8Z9zO.png", addedDate: "2023-05-12" },
+            { name: "Perplexity", category: "Search Engines", description: "A conversational search engine that provides cited answers to complex queries in real-time.", pricing: "Freemium", link: "https://perplexity.ai", logo: "perplexity.jpg", addedDate: "2024-01-10" },
+            { name: "Luma Dream Machine", category: "Video", description: "Create high-quality, realistic videos from text and images using advanced physics modeling.", pricing: "Freemium", link: "https://lumalabs.ai", logo: "https://asset.brandfetch.io/idN77vYy0u/idZ_7v4y0u.png", addedDate: "2024-07-01" },
+            { name: "ElevenLabs", category: "Audio & Voice", description: "The most realistic AI speech software, offering high-quality voice cloning and text-to-speech.", pricing: "Freemium", link: "https://elevenlabs.io", logo: "https://asset.brandfetch.io/id9yE6-4p8/id3_y6-4p8.png", addedDate: "2023-08-15" },
+            { name: "Leonardo AI", category: "Art & Images", description: "Full creative suite for image generation, model training, and canvas editing with AI.", pricing: "Freemium", link: "https://leonardo.ai", logo: "https://asset.brandfetch.io/iddP6XhXG_/id_P6XhXG_.png", addedDate: "2023-12-05" },
+            { name: "Github Copilot", category: "Coding", description: "Your AI pair programmer that suggests code and entire functions in real-time within your IDE.", pricing: "Paid", link: "https://github.com/features/copilot", logo: "https://github.githubassets.com/images/modules/site/features/copilot/copilot-logo.png", addedDate: "2023-03-20" },
+            { name: "Runway Gen-3", category: "Video", description: "Next-generation video creation tool offering cinematic results and granular creative control.", pricing: "Paid", link: "https://runwayml.com", logo: "https://asset.brandfetch.io/idp97-uR5U/id57_uR5U.png", addedDate: "2024-06-25" },
+            { name: "Gamma", category: "Presentations", description: "Create beautiful presentations, websites, and documents in seconds with AI design assistance.", pricing: "Freemium", link: "https://gamma.app", logo: "https://asset.brandfetch.io/id8yL_X_Xz/id_yL_X_Xz.png", addedDate: "2024-02-14" },
+            { name: "Canva Magic Studio", category: "Design", description: "A suite of AI tools integrated into Canva for image editing, writing, and design automation.", pricing: "Freemium", link: "https://canva.com", logo: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg", addedDate: "2023-09-30" },
+            { name: "Notion AI", category: "Productivity", description: "Integrated AI within Notion to summarize notes, fix grammar, and brainstorm new ideas.", pricing: "Paid", link: "https://notion.so", logo: "https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png", addedDate: "2023-04-10" },
+            { name: "Stable Diffusion", category: "Art & Images", description: "Open-source latent text-to-image diffusion model capable of generating photo-realistic images.", pricing: "Free", link: "https://stability.ai", logo: "https://asset.brandfetch.io/id977vYy0u/idZ_7v4y0u.png", addedDate: "2023-01-15" },
+            { name: "Descript", category: "Video", description: "Edit video and audio by editing text. Features amazing voice cloning and filler word removal.", pricing: "Freemium", link: "https://descript.com", logo: "https://asset.brandfetch.io/id8e_4p_6-/id8e_4p_6-.png", addedDate: "2023-06-05" },
+            { name: "Poe", category: "Chatbots", description: "Quora's platform to access multiple AI models like GPT-4, Claude, and Llama in one interface.", pricing: "Freemium", link: "https://poe.com", logo: "https://asset.brandfetch.io/idmByZ_M9T/id3vO5a0bA.png", addedDate: "2023-11-20" },
+            { name: "Framer AI", category: "Design", description: "Design and publish complete websites in minutes using natural language prompts.", pricing: "Freemium", link: "https://framer.com", logo: "https://asset.brandfetch.io/id77vYy0u/idZ_7v4y0u.png", addedDate: "2024-03-05" },
+            { name: "Synthesia", category: "Video", description: "Create professional videos with AI avatars in over 120 languages without cameras or mics.", pricing: "Paid", link: "https://synthesia.io", logo: "https://asset.brandfetch.io/id_P6XhXG_/iddP6XhXG_.png", addedDate: "2023-02-15" },
+            { name: "Suno AI", category: "Music", description: "Generate full songs with lyrics and vocals from a simple text prompt. Game changing for music.", pricing: "Freemium", link: "https://suno.ai", logo: "https://asset.brandfetch.io/id8yL_X_Xz/id_yL_X_Xz.png", addedDate: "2024-04-01" },
+            { name: "Grammarly", category: "Copywriting", description: "The classic writing assistant now powered by advanced AI for tone and context adjustments.", pricing: "Freemium", link: "https://grammarly.com", logo: "https://upload.wikimedia.org/wikipedia/en/5/51/Grammarly_logo.svg", addedDate: "2023-07-22" },
+            { name: "Replicate", category: "Development", description: "Run machine learning models in the cloud with an easy-to-use API for developers.", pricing: "Paid", link: "https://replicate.com", logo: "https://asset.brandfetch.io/idv97-uR5U/id57_uR5U.png", addedDate: "2023-10-10" },
+            { name: "Otter.ai", category: "Productivity", description: "Smart AI meeting assistant that records, transcribes, and summarizes your conversations.", pricing: "Freemium", link: "https://otter.ai", logo: "https://asset.brandfetch.io/id77vYy0u/idZ_7v4y0u.png", addedDate: "2023-04-18" },
+            { name: "Phind", category: "Coding", description: "An AI search engine optimized specifically for developers and technical questions.", pricing: "Free", link: "https://phind.com", logo: "https://asset.brandfetch.io/id8e_4p_6-/id8e_4p_6-.png", addedDate: "2024-01-25" },
+            { name: "Krea AI", category: "Art & Images", description: "Real-time AI creative suite for high-quality upscaling and live image generation.", pricing: "Freemium", link: "https://krea.ai", logo: "https://asset.brandfetch.io/idOByZ_M9T/id3vO5a0bA.png", addedDate: "2024-05-15" },
+            { name: "Veed.io", category: "Video", description: "Online video editor with AI-powered subtitles, background removal, and voiceovers.", pricing: "Freemium", link: "https://veed.io", logo: "https://asset.brandfetch.io/idp97-uR5U/id57_uR5U.png", addedDate: "2023-11-05" },
+            { name: "Rask AI", category: "Translation", description: "Translate videos into 130+ languages with voice cloning that maintains your original voice.", pricing: "Paid", link: "https://rask.ai", logo: "https://asset.brandfetch.io/id8yL_X_Xz/id_yL_X_Xz.png", addedDate: "2024-02-28" },
+            { name: "Uizard", category: "Design", description: "The world's first AI-powered design tool for creating wireframes and prototypes.", pricing: "Freemium", link: "https://uizard.io", logo: "https://asset.brandfetch.io/idv97-uR5U/id57_uR5U.png", addedDate: "2023-08-10" },
+            { name: "Luma Genie", category: "3D", description: "Create high-fidelity 3D models from simple text prompts in just a few minutes.", pricing: "Freemium", link: "https://lumalabs.ai/genie", logo: "https://asset.brandfetch.io/idN77vYy0u/idZ_7v4y0u.png", addedDate: "2024-03-20" },
+            { name: "Whisper", category: "Audio & Voice", description: "OpenAI's open-source speech-to-text model that achieves near human-level accuracy.", pricing: "Free", link: "https://openai.com/research/whisper", logo: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg", addedDate: "2022-12-01" },
+            { name: "Fireflies.ai", category: "Productivity", description: "Automate your meeting notes. Records, transcribes, and analyzes all your business calls.", pricing: "Freemium", link: "https://fireflies.ai", logo: "https://asset.brandfetch.io/id8e_4p_6-/id8e_4p_6-.png", addedDate: "2023-09-12" },
+            { name: "Character.ai", category: "Entertainment", description: "Chat with AI versions of historical figures, celebrities, or user-created characters.", pricing: "Free", link: "https://character.ai", logo: "https://asset.brandfetch.io/idOByZ_M9T/id3vO5a0bA.png", addedDate: "2023-06-20" },
+            { name: "HeyGen", category: "Video", description: "AI video generation platform for creating spokesperson videos and translating videos.", pricing: "Freemium", link: "https://heygen.com", logo: "https://asset.brandfetch.io/id_P6XhXG_/iddP6XhXG_.png", addedDate: "2024-01-05" },
+            { name: "Adobe Firefly", category: "Art & Images", description: "Adobe's family of generative AI models integrated directly into Photoshop and Illustrator.", pricing: "Freemium", link: "https://firefly.adobe.com", logo: "https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Creative_Cloud_logo_2020.svg", addedDate: "2023-10-25" },
+            { name: "Writesonic", category: "Copywriting", description: "SEO-optimized content creator for blogs, ads, and product descriptions.", pricing: "Freemium", link: "https://writesonic.com", logo: "https://asset.brandfetch.io/id8yL_X_Xz/id_yL_X_Xz.png", addedDate: "2023-05-30" },
+            { name: "Cursor", category: "Coding", description: "The AI-first code editor built for pair programming with an integrated LLM.", pricing: "Freemium", link: "https://cursor.sh", logo: "https://asset.brandfetch.io/id77vYy0u/idZ_7v4y0u.png", addedDate: "2024-04-12" },
+            { name: "Midjourney v6", category: "Art & Images", description: "The latest version of Midjourney with vastly improved photorealism and text rendering.", pricing: "Paid", link: "https://midjourney.com", logo: "https://asset.brandfetch.io/idfS9_l_6-/id88l2_X0m.png", addedDate: "2024-01-01" },
+            { name: "Black Forest Labs (FLUX)", category: "Art & Images", description: "High-end image generation model setting new benchmarks for open-weights performance.", pricing: "Free", link: "https://blackforestlabs.ai", logo: "flux.jpg", addedDate: "2024-08-01" },
+            { name: "Perplexity Pages", category: "Research", description: "Easily turn your research into beautiful, structured, and publishable articles with AI.", pricing: "Freemium", link: "https://perplexity.ai/hub", logo: "https://asset.brandfetch.io/idOByZ_M9T/id3vO5a0bA.png", addedDate: "2024-05-22" },
+            { name: "D-ID", category: "Video", description: "Create talking head videos from just a photo and text script in minutes.", pricing: "Freemium", link: "https://d-id.com", logo: "https://asset.brandfetch.io/id_P6XhXG_/iddP6XhXG_.png", addedDate: "2023-03-15" },
+            { name: "Looka", category: "Design", description: "AI logo maker and brand identity platform for entrepreneurs and small businesses.", pricing: "Paid", link: "https://looka.com", logo: "https://asset.brandfetch.io/id8e_4p_6-/id8e_4p_6-.png", addedDate: "2023-02-10" },
+            { name: "Tome", category: "Presentations", description: "AI-powered storytelling tool that generates entire narrative presentations from a prompt.", pricing: "Freemium", link: "https://tome.app", logo: "https://asset.brandfetch.io/id8yL_X_Xz/id_yL_X_Xz.png", addedDate: "2023-04-05" },
+            { name: "QuillBot", category: "Education", description: "AI paraphrasing tool that helps students and professionals rewrite and enhance text.", pricing: "Freemium", link: "https://quillbot.com", logo: "https://asset.brandfetch.io/id77vYy0u/idZ_7v4y0u.png", addedDate: "2023-01-20" },
+            { name: "Spline AI", category: "3D", description: "Generate 3D objects, textures, and scenes using natural language and real-time collaboration.", pricing: "Freemium", link: "https://spline.design", logo: "https://asset.brandfetch.io/idOByZ_M9T/id3vO5a0bA.png", addedDate: "2024-02-18" },
+            { name: "Humane Center", category: "Hardware", description: "AI Pin companion app and ecosystem for the wearable AI device.", pricing: "Paid", link: "https://humane.com", logo: "https://asset.brandfetch.io/idv97-uR5U/id57_uR5U.png", addedDate: "2024-04-15" },
+            { name: "Suno v3.5", category: "Music", description: "Latest music generation model with increased song length and higher fidelity audio.", pricing: "Freemium", link: "https://suno.com", logo: "https://asset.brandfetch.io/id8yL_X_Xz/id_yL_X_Xz.png", addedDate: "2024-07-15" },
+            { name: "Lovo AI", category: "Audio & Voice", description: "Next-gen AI voiceover and text-to-speech platform with human-like emotional range.", pricing: "Freemium", link: "https://lovo.ai", logo: "https://asset.brandfetch.io/id8e_4p_6-/id8e_4p_6-.png", addedDate: "2023-09-08" },
+            { name: "Mubert", category: "Music", description: "AI-generated royalty-free music for content creators, streamers, and app developers.", pricing: "Freemium", link: "https://mubert.com", logo: "https://asset.brandfetch.io/id_P6XhXG_/iddP6XhXG_.png", addedDate: "2023-06-12" },
+            { name: "Profile Picture AI", category: "Avatar", description: "Create professional-looking AI avatars and profile pictures for LinkedIn and social media.", pricing: "Paid", link: "https://profilepicture.ai", logo: "https://asset.brandfetch.io/idOByZ_M9T/id3vO5a0bA.png", addedDate: "2023-05-02" },
+            { name: "InVideo AI", category: "Video", description: "Generate ready-to-publish videos with scripts, stock footage, and voiceovers via text.", pricing: "Freemium", link: "https://invideo.io", logo: "https://asset.brandfetch.io/idv97-uR5U/id57_uR5U.png", addedDate: "2023-12-18" },
+            { name: "Polymer", category: "Data Analysis", description: "Turn spreadsheets into searchable, interactive, and beautiful data dashboards with AI.", pricing: "Paid", link: "https://polymersearch.com", logo: "https://asset.brandfetch.io/id8yL_X_Xz/id_yL_X_Xz.png", addedDate: "2024-03-30" }
+        ];
+
+        const catIcons = {
+            "all": "fa-fire",
+            "Chatbots": "fa-comments",
+            "Art & Images": "fa-palette",
+            "Copywriting": "fa-pen-nib",
+            "Search Engines": "fa-search",
+            "Video": "fa-video",
+            "Audio & Voice": "fa-microphone",
+            "Coding": "fa-code",
+            "Presentations": "fa-chalkboard-teacher",
+            "Design": "fa-compass",
+            "Productivity": "fa-briefcase",
+            "Translation": "fa-language",
+            "3D": "fa-cube",
+            "Music": "fa-music",
+            "Development": "fa-terminal",
+            "Education": "fa-graduation-cap",
+            "Entertainment": "fa-gamepad",
+            "Research": "fa-microscope",
+            "Avatar": "fa-user-circle",
+            "Data Analysis": "fa-chart-bar",
+            "Hardware": "fa-microchip"
+        };
+
+        // --- 2. State Management ---
+        let favorites = JSON.parse(localStorage.getItem('aivault_favs')) || [];
+        let ratings = JSON.parse(localStorage.getItem('aivault_ratings')) || {};
+        let viewCounts = JSON.parse(localStorage.getItem('aivault_views')) || {};
+        let activeCategory = 'all';
+        let searchQuery = '';
+        let sortMode = 'newest';
+        let showFavsOnly = false;
+
+        // --- 3. Core Functions ---
+        function init() {
+            renderCategories();
+            renderTools();
+            updateStats();
+            setupEventListeners();
+            checkTheme();
+        }
+
+       function renderCategories() {
+            const categories = ['all', ...new Set(toolsData.map(t => t.category))];
+            const container = document.getElementById('categoryList');
+            container.innerHTML = categories.map(cat => {
+                
+                const icon = catIcons[cat] || 'fa-tag';
+                const displayName = cat === 'all' ? 'All Tools' : cat;
+                
+                return `
+                    <div class="cat-chip ${cat === activeCategory ? 'active' : ''}" data-cat="${cat}">
+                        <i class="fas ${icon}"></i> ${displayName}
+                    </div>
+                `;
+            }).join('');
+
+          
+            document.querySelectorAll('.cat-chip').forEach(chip => {
+                chip.onclick = () => {
+                  
+                    activeCategory = chip.dataset.cat;
+                    renderCategories(); 
+                    
+                    // Re-filter and draw the tools grid
+                    renderTools();      
+                };
+            });
+        }
+
+        function renderTools() {
+            const grid = document.getElementById('toolsGrid');
+            let filtered = toolsData.filter(tool => {
+                const matchesCat = activeCategory === 'all' || tool.category === activeCategory;
+                const matchesSearch = tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                     tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesFav = !showFavsOnly || favorites.includes(tool.name);
+                return matchesCat && matchesSearch && matchesFav;
+            });
+
+            // Sorting
+            if (sortMode === 'az') filtered.sort((a,b) => a.name.localeCompare(b.name));
+            else if (sortMode === 'newest') filtered.sort((a,b) => new Date(b.addedDate) - new Date(a.addedDate));
+            else if (sortMode === 'rating') {
+                filtered.sort((a,b) => (ratings[b.name] || 0) - (ratings[a.name] || 0));
+            }
+
+            grid.innerHTML = filtered.map(tool => {
+                const isFav = favorites.includes(tool.name);
+                const avgRating = ratings[tool.name] || 0;
+                                // This checks if a logo exists; if not, it makes a colored letter logo
+                const logoHtml = (tool.logo && tool.logo.length > 10) 
+                    ? `<img src="${tool.logo}" class="tool-logo" alt="${tool.name}" onerror="handleImageError(this, '${tool.name}')">`
+                    : createPlaceholderLogo(tool.name);
+                // Highlight text if searching
+                let nameHtml = tool.name;
+                let descHtml = tool.description;
+                if(searchQuery) {
+                    const regex = new RegExp(`(${searchQuery})`, 'gi');
+                    nameHtml = tool.name.replace(regex, '<mark>$1</mark>');
+                    descHtml = tool.description.replace(regex, '<mark>$1</mark>');
+                }
+
+                return `
+                    <div class="tool-card" onclick="openToolModal('${tool.name.replace(/'/g, "\\'")}')">
+                        <div class="card-header">
+                           ${logoHtml}
+                            <button class="favorite-btn ${isFav ? 'active' : ''}" 
+                                    onclick="toggleFavorite(event, '${tool.name.replace(/'/g, "\\'")}')">
+                                <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <h3 class="tool-name">${nameHtml}</h3>
+                        <p class="tool-desc">${descHtml}</p>
+                        <div class="card-footer">
+                            <span class="pricing-badge price-${tool.pricing.toLowerCase()}">${tool.pricing}</span>
+                            <div class="rating-mini">
+                                <i class="fas fa-star"></i> <span>${avgRating > 0 ? avgRating.toFixed(1) : 'New'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            if(filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 4rem; color: var(--text-secondary)">
+                    <i class="fas fa-search-minus" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5"></i>
+                    <h3>No tools found matching your criteria.</h3>
+                </div>`;
+            }
+        }
+
+        // --- 4. Interactive Logic ---
+        function toggleFavorite(e, name) {
+            e.stopPropagation();
+            if (favorites.includes(name)) {
+                favorites = favorites.filter(f => f !== name);
+            } else {
+                favorites.push(name);
+            }
+            localStorage.setItem('aivault_favs', JSON.stringify(favorites));
+            updateStats();
+            renderTools();
+        }
+
+        function openToolModal(name) {
+            const tool = toolsData.find(t => t.name === name);
+            const overlay = document.getElementById('toolModal');
+            const content = document.getElementById('modalDetailContent');
+            
+            // Increment Views
+            viewCounts[name] = (viewCounts[name] || 0) + 1;
+            localStorage.setItem('aivault_views', JSON.stringify(viewCounts));
+
+            const curRating = ratings[name] || 0;
+                        // This generates the logo for the popup
+            const modalLogoHtml = (tool.logo && tool.logo.length > 10)
+                ? `<img src="${tool.logo}" class="modal-logo" alt="${tool.name}" onerror="handleImageError(this, '${tool.name}')">`
+                : createPlaceholderLogo(tool.name, true);
+
+            content.innerHTML = `
+                ${modalLogoHtml}
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem">${tool.name}</h2>
+                <div style="color: var(--accent-color); font-weight: 600; margin-bottom: 1rem">
+                    <i class="fas ${catIcons[tool.category] || 'fa-tag'}"></i> ${tool.category}
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem">${tool.description}</p>
+                
+                <div class="modal-meta">
+                    <span><i class="fas fa-eye"></i> ${viewCounts[name]} Views</span>
+                    <span class="pricing-badge price-${tool.pricing.toLowerCase()}">${tool.pricing}</span>
+                    <span><i class="fas fa-calendar"></i> Added ${tool.addedDate}</span>
+                </div>
+
+                <div style="margin: 1.5rem 0;">
+                    <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem">Rate this tool</p>
+                    <div class="star-rating" style="font-size: 1.5rem; color: var(--warning); cursor: pointer">
+                        ${[1,2,3,4,5].map(i => `<i class="${i <= curRating ? 'fas' : 'far'} fa-star" onclick="rateTool('${tool.name}', ${i})"></i>`).join('')}
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <a href="${tool.link}" target="_blank" class="btn btn-primary" style="text-decoration: none; justify-content: center">
+                        Visit Website <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <button class="btn btn-ghost" style="justify-content: center" onclick="copyToClipboard('${tool.link}')">
+                        <i class="fas fa-share-alt"></i> Share Tool
+                    </button>
+                </div>
+            `;
+            overlay.classList.add('active');
+        }
+
+        function rateTool(name, val) {
+            ratings[name] = val;
+            localStorage.setItem('aivault_ratings', JSON.stringify(ratings));
+            openToolModal(name); // Refresh modal
+            renderTools(); // Refresh background
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function toggleModal(id) {
+            document.getElementById(id).classList.toggle('active');
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+        }
+
+        function updateStats() {
+            document.getElementById('totalCounter').innerText = `${toolsData.length} AI Tools Available`;
+            document.getElementById('favCount').innerText = favorites.length;
+        }
+
+        // --- 5. Event Listeners ---
+        function setupEventListeners() {
+            document.getElementById('searchInput').oninput = (e) => {
+                searchQuery = e.target.value;
+                renderTools();
+            };
+
+            document.getElementById('sortSelect').onchange = (e) => {
+                sortMode = e.target.value;
+                renderTools();
+            };
+
+            document.getElementById('favFilter').onclick = () => {
+                showFavsOnly = !showFavsOnly;
+                document.getElementById('favFilter').classList.toggle('active');
+                renderTools();
+            };
+
+            document.getElementById('themeToggle').onclick = () => {
+                const isDark = document.body.getAttribute('data-theme') !== 'light';
+                document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+                document.getElementById('themeToggle').innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+                localStorage.setItem('aivault_theme', isDark ? 'light' : 'dark');
+            };
+
+            window.onscroll = () => {
+                const btn = document.getElementById('backToTop');
+                btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+            };
+
+            document.getElementById('backToTop').onclick = () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            document.getElementById('submitForm').onsubmit = (e) => {
+                e.preventDefault();
+                toggleModal('submitModal');
+                copyToClipboard(""); // Re-using logic to show success
+                document.getElementById('toast').innerText = "Tool Submitted Successfully!";
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    document.getElementById('toast').innerText = "Link Copied Successfully!";
+                }, 3000);
+                e.target.reset();
+            };
+
+            // Close modal on outside click
+            window.onclick = (e) => {
+                if(e.target.classList.contains('modal-overlay')) closeAllModals();
+            };
+        }
+
+        function checkTheme() {
+            const saved = localStorage.getItem('aivault_theme');
+            if(saved === 'light') {
+                document.body.setAttribute('data-theme', 'light');
+                document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        }
+
+        // --- Start App ---
+        init();
+
+    </script>
+   <div style="text-align: center; font-family: sans-serif; width: 100%;">
+    <h1 style="margin: 0; font-size: 24px; font-weight: bold;color: #f3f6f8;">
+        Created By:
+    </h1> 
+    
+    <h1 style="margin: 0; font-size: 24px; font-weight: bold;color: #1879ad;">
+        Vishnu Ram V.S.
+    </h1>
+
+    <div style="display: inline-block; text-align: left; margin-left: 40px; font-size: 18px; color: #555;">
+       <i>BE Computer Science & Engineering</i>
+    </div><br>
+    <div style="display: inline-block; text-align: left; margin-left: 40px; font-size: 18px; color: #555;">
+       Email:<i>vishnuramsurendran510@gmail.com</i>
+    </div>
+
+</div>
+</body>
+</html>
